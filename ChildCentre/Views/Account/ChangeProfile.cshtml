@@ -1,0 +1,78 @@
+﻿@model ChildCentre.ViewModels.ProfileModel
+
+@{
+    ViewBag.Title = "Change Personal Profile";
+}
+
+<div class="row">
+    <div class="admin-nav large-5  column">
+        <h2><i class="icon-user"></i>Account Panel</h2>
+        <ul>
+            <li><a class="active" href="/Account/ChangeProfile">Change Profile Information</a></li>
+            <li><a href="/Account/ChangePassword">Change Password</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>Manage Account / Change Profile Info</h2>
+        <div class="admin-body large-14 column">
+            @Html.Raw(TempData["SuccessMessage"])
+            <div style="@TempData["isSuccess"]" data-alert class="success-message alert-box">
+                <i class="icon-ok-circle"></i>
+                <span>Profile successfully updated!</span>
+                <a href="#" class="close">&times;</a> 
+            </div>
+            @using (Html.BeginForm("ChangeProfile", "Account",
+            FormMethod.Post, htmlAttributes: new { data_abide="" }))
+            {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div>
+                <label>@Html.DisplayNameFor(m => m.GivenName)<small> required</small></label>
+                @Html.TextBoxFor(m => m.GivenName, new { required = "", pattern="alpha", maxlength="20" })
+                <small class="error">Required field. Only letters, max of 20 characters</small>
+            </div>  
+			<div>
+                <label>@Html.DisplayNameFor(m => m.LastName)<small> required</small></label>
+                @Html.TextBoxFor(m => m.LastName, new { required = "", pattern="alpha", maxlength="20" })
+                <small class="error">Required field. Only letters, max of 20 characters</small>
+            </div>
+            <div>
+                <label>@Html.DisplayNameFor(m => m.Email)<small> required</small></label>
+                @Html.TextBoxFor(m => m.Email, new { required = "", pattern="email"  })
+                <small class="error">Enter a correct email</small>
+            </div> 
+            <div>
+				@Html.LabelFor(m => m.Address.StreetName)
+                @Html.TextBoxFor(m => m.Address.StreetName, new { pattern="[a-zA-Z0-9 ]+" })
+                <small class="error">Only letters and numbers</small>
+            </div>
+			<div class="row">
+				<div class="large-12 column">
+					@Html.LabelFor(m => m.Address.City)
+                    @Html.TextBoxFor(m => m.Address.City, new { pattern="alpha" })
+                    <small class="error">Only letters and numbers</small>
+				</div>
+				<div class="large-12 column">
+					@Html.LabelFor(m => m.Address.PostalCode)
+                    @Html.TextBoxFor(m => m.Address.PostalCode, new { pattern="alpha_numeric" })
+                    <small class="error">Only letters and numbers</small>
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 column">
+					<label>@Html.DisplayNameFor(m => m.PrimaryPhone)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.PrimaryPhone, new { required="", pattern = "integer", maxlength="10" })
+                    <small class="error">Enter a valid number</small>
+				</div>
+				<div class="large-12 column">
+                    <label>@Html.DisplayNameFor(m => m.SecondaryPhone)</label>
+                    @Html.TextBoxFor(m => m.SecondaryPhone, new { pattern = "integer", maxlength="10" })
+                    <small class="error">Enter a valid phone number</small>
+				</div>
+			</div>
+            <a class="button tiny secondary right" href="/Account/ChangeProfile">Reset</a>
+            <input type="submit" class="button tiny right" value="Submit" />
+            }
+        </div>
+    </div>
+</div>

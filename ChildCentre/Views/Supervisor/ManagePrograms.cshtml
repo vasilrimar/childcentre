@@ -1,0 +1,161 @@
+﻿@model IEnumerable<ChildCentre.Models.Program>
+
+@{
+    ViewBag.Title = "Manage Programs";
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a class="active" href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>@ViewBag.Title /</h2>
+        @if (Model.Count() == 0)
+        {
+            <p class="list-empty">No programs created yet.</p>
+        }
+        else
+        {
+            <div class="actions-bar">
+                <div class="large-8 column">
+                    <input name="search" id="search-field" type="search" placeholder="Search Programs & Drafts..." />
+                </div>
+            </div>
+            <table id="sortable" class="tablesorter">
+                <thead>
+                <tr class="table-heading">
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Last Updated</th>
+                    <th>Proposer</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.Name</td>
+                        <td class="status-@a.Status">
+                            @if(a.Status == ChildCentre.Models.Status.PendingReview)
+                            {
+                                <span>Pending Review</span>
+                            }
+                            else 
+                            {
+                                @a.Status
+                            }
+                        </td>
+                        <td>@a.LastUpdated.ToString("MMMM dd, yyyy")</td>
+                        <td>@a.pwName</td>
+                        <td class="operations">
+                            @if (a.Status == ChildCentre.Models.Status.Active || a.Status == ChildCentre.Models.Status.Inactive)
+                            {
+                                <a href="#" class="view hint--bottom" data-reveal-id="view-@a.Id" data-hint="View" ><i class="icon-eye-open"></i></a>
+                                <a href="#" onclick="deleteDraft(@a.Id); return false;" class="delete2 hint--bottom" data-hint="Delete"><i class="icon-remove"></i></a>
+                                <div style="display:none;" id="view-@a.Id"  class="reveal-modal tiny" data-reveal>
+                                    <h2>View Draft : <strong>@a.Name</strong> </h2>
+                                        <div class="body row">
+                                            <div class="row">
+	                                        <div class="large-8 column">
+		                                        <img src="/Programs/Image/@a.Id"/>
+	                                        </div>
+                                            @if (a.Status == ChildCentre.Models.Status.Active || a.Status == ChildCentre.Models.Status.Inactive)
+                                            {
+                                                <div class="large-14 column">
+                                                    <p><strong>Date Created : </strong> @a.DateCreated.ToString("MMMM dd, yyyy")</p>
+		                                            <p><strong>Day Offered</strong> : @a.DayOffered</p>
+                                                    <p><strong>Between : </strong>@a.StartTime.ToString("t") - @a.EndTime.ToString("t")</p>
+                                                    <p><strong>Child Limit/Guardian :</strong> @a.ChildLimit</p>
+	                                            </div>
+                                            }
+                                            </div>
+	                                        <div class="large-24 column">
+		                                        <h3>Description:</h3>
+		                                        <p>@a.Description</p>
+	                                        </div>
+                                        </div>
+                                    <a class="close-reveal-modal">&#215;</a>
+                                </div>
+                            }
+                            @if (a.Status == ChildCentre.Models.Status.Active)
+                            {
+                                <a href="/Supervisor/Deactivate/@a.Id" class="activate hint--bottom" data-hint="Deactivate" ><i class="icon-lock"></i></a>
+                                <a href="/Supervisor/EditProgram/@a.Id" class="edit hint--bottom" data-hint="Edit Program" ><i class="icon-edit"></i></a>
+                            }
+                            @if (a.Status == ChildCentre.Models.Status.Inactive)
+                            {
+                                <a href="/Supervisor/Activate/@a.Id" class="activate hint--bottom" data-hint="Activate" ><i class="icon-lock"></i></a>
+                                <a href="/Supervisor/EditProgram/@a.Id" class="edit hint--bottom" data-hint="Edit Program" ><i class="icon-edit"></i></a>
+                            }                        
+                            @if (a.Status == ChildCentre.Models.Status.PendingReview)
+                            {
+                                <a href="#" class="review hint--bottom" data-hint="Review Draft" data-reveal-id="review-@a.Id" ><i class="icon-signin"></i></a>
+                                <div style="display:none;" id="review-@a.Id"  class="reveal-modal tiny" data-reveal>
+		                            <h2>Program : <strong>@a.Name</strong> </h2>
+                                    <div class="body">
+                                        <div class="row">
+                                            <div class="large-12 column">
+                                                <img src="/Programs/Image/@a.Id"/>
+                                            </div>	
+                                        </div>                                                  
+                                        <h3>Description:</h3>
+		                                <p>@a.Name</p>
+
+	                                    <h3>Date Sent : </h3>
+	                                    <p>@a.LastUpdated</p>
+
+	                                    <h3>Program Worker Comments</h3>
+	                                    @if (!String.IsNullOrEmpty(a.supervisorComments))
+                                     {
+	                                        <p>@a.pwComments </p>
+                                     }
+                                     else
+                                     {
+                                            <p><i>No comments to display.</i></p>
+                                     }
+
+                                        <a href="/Supervisor/AcceptDraft/@a.Id" class="button small">
+                                            Accept Draft
+                                        </a>
+
+                                        <a href="/Supervisor/DenyDraft/@a.Id" class="button small secondary">
+                                            Deny Draft
+                                        </a>
+                                    </div>
+	                            <a class="close-reveal-modal">&#215;</a>
+                            </div>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+    function deleteDraft(id) {
+        if (confirm("Warning: Deleteing an active program will delete ALL sessions and attendance sheets.\n "
+            + "Do you wish to continue?")) {
+            $.ajax({
+                url: '/Supervisor/DeleteDraft/',
+                data: {
+                    id: id,
+                },
+                type: 'POST',
+                success: function (data) {
+                    window.location = '/Supervisor/ManagePrograms/';
+                },
+            });
+        }
+    }
+</script>
+

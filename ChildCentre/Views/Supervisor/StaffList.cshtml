@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.StaffList>
+
+@{
+    ViewBag.Title = "Manage Staff Accounts";
+}
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a class="active" href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>@ViewBag.Title /</h2>
+        @if (Model.Count() == 0)
+        {
+            <p class="list-empty">No staff accounts created.
+                <a id="addStaff" href="/Supervisor/AddStaff/"><i class="icon-plus"></i> Add Staff</a>
+            </p>
+        }
+        else
+        {
+            <div class="actions-bar">
+                <div class="large-8 column">
+                    <input name="search" id="search-field" type="search" placeholder="Search Staff Accounts..." />
+                </div>
+                <div class="large-12 column">
+                    <a id="addStaff" class="right button secondary tiny" href="/Supervisor/AddStaff/"><i class="icon-plus"></i> Add Staff</a>
+                </div>
+            </div>
+            <table id="sortable" class="tablesorter">
+                <thead>
+                <tr class="table-heading">
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>                        
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.UserName</td>
+                        <td>@a.GivenName</td>
+                        <td>@a.LastName</td>
+                        <td>@a.Email</td>          
+                        @if (a.StaffType == null)
+                        {            
+                            <td>Program Worker </td>
+                        }
+                        else if (a.StaffType.ToLower().Equals("programworker"))
+                        {
+                            <td>Program Worker </td>
+                        }
+                        else 
+                        {
+                            <td>Supervisor</td>
+                        }
+                        <td class="operations">
+                            <a class="edit hint--bottom" data-hint="Edit" href="/Supervisor/EditStaff/@a.Id">
+                                <i class="icon-edit"></i>
+                            </a>                          
+                            <a class="delete hint--bottom" data-hint="Delete"  onclick="deleteStaff('@a.UserName'); return false;" href="#">
+                                <i class="icon-remove"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+
+<script>
+    function deleteStaff(name) {
+        if (confirm('Are you sure you want to delete this staff member?')) {
+            $.ajax({
+                url: '/Supervisor/DeleteStaff/',
+                data: {
+                    name: name,
+                },
+                type: 'POST',
+                success: function (data) {
+                    window.location = '/Supervisor/StaffList/';
+                },
+            });
+        }
+    }
+    $('#addStaff').on('click', function () {
+        window.location = '/Supervisor/AddStaff/';
+    });
+</script>

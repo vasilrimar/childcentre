@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.ProgramList>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="home" class="container row">
+    <h1> Recent Programs</h1>
+    <div class="home-program-list row">
+        @if (Model.Count() == 0)
+        {
+            <p>We are sorry there are no programs currently running.</p>
+        }
+        @foreach (var p in Model)
+        {
+        <div class="program large-12 column left">
+            <div class="row">
+                <div class="large-24 column">
+                    <h4>@p.Name</h4>
+                </div>
+		        <div class="large-24 column">
+                    <div class="large-12 column">
+                        <img src="Programs/Image/@p.Id"/>
+                    </div>
+                        <div class="large-12 column">
+                        @if (p.Description.Length > 100)
+                        {
+                           <p>@p.Description.Substring(0, 100) ...</p>
+                        }
+                        else 
+                        {
+                           <p>@p.Description</p> 
+                        }
+                    </div>
+		            <a class="button tiny secondary right" href="/Programs/#@p.Id">Read More</a>
+		        </div>    
+	        </div>
+        </div>
+        }
+    </div>
+
+   <!-- <div class="row">
+        <div class="large-24 column">
+            <h1 class="donor-heading"> Our Donors </h1>
+	        <ul class="large-block-grid-4 small-block-grid-4">
+		        <li><img src="/Images/donors/1.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/2.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/3.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/4.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/5.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/6.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/7.jpg" alt="donor"/></li>
+		        <li><img src="/Images/donors/8.jpg" alt="donor"/></li>
+	        </ul>
+        </div>
+    </div> -->
+</div>

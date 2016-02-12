@@ -1,0 +1,100 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.ProgramList>
+
+@{
+    ViewBag.Title = "Programs";
+}
+
+<div id="publicPrograms" class="row container">
+    <nav class="breadcrumbs">
+		<a href="/">Home</a>
+		<a class="current" href="#">Programs</a>
+	</nav>
+    @if (Model.Count() == 0)
+    {
+        <p class="list-empty">We are sorry there are no programs currently running.</p>
+    }
+    <div class="program-filters row">
+	    <a data-filter="*" class="active" href="#">All</a>
+	    <a data-filter=".Monday" href="#">Monday</a>
+	    <a data-filter=".Tuesday"href="#">Tuesday</a>
+	    <a data-filter=".Wednesday"href="#">Wednesday</a>
+        <a data-filter=".Thursday"href="#">Thursday</a>
+        <a data-filter=".Friday"href="#">Friday</a>
+    </div>
+    <div style="padding:15px" class="large-10 column">
+        <form class="clearfix" method="POST" action="/Programs/">
+            <input type="search" name="searchFieldText" class="left" style="box-shadow:none;" placeholder="Search programs" />
+            <input type="submit" class="button secondary tiny" 
+                   style="box-shadow:none; position:absolute; right:-59px; height:37px; outline:none" />
+        </form>
+    </div>
+    <div class="active-programs-list large-24 columns">
+    @foreach (var p in Model)
+    {
+        @for (int i = 0; i < Model.ReferralsDDL.Titles.Length; i++)
+                {
+                    if (@ViewBag.referrer == Model.ReferralsDDL.Titles[i])
+                    {
+                        <option value="@Model.ReferralsDDL.Values[i]" selected="selected">
+									@if(Model.ReferralsDDL.Titles[i].Length > 50)
+									{
+										@Model.ReferralsDDL.Titles[i].Substring(0,50)
+									}
+									else 
+									{
+										@Model.ReferralsDDL.Titles[i]
+									}
+								</option>
+                    }
+                    else
+                    {
+                        <option value="@Model.ReferralsDDL.Values[i]">
+								@Model.ReferralsDDL.Titles[i]
+								</option>
+                    }
+                }
+        <div id="@p.Id" class="list-item large-24 column @p.DayOffered">
+			<div class="large-4 small-12 column">
+                <div class="item-img">                    
+				    <img src="/Programs/Image/@p.Id">
+                    @if(p.Description.Length > 50)
+                    {
+                        p.Description.Substring(0, 50);
+                    }
+                </div>
+			</div>
+			<div class="item-info push-1 large-5 small-12 column">
+				<h3>@p.Name</h3>
+				<span style="font-size:12px;"><strong>@p.DayOffered : @p.StartTime.ToShortTimeString() - @p.EndTime.ToShortTimeString() </strong></span>
+				<p style="font-size:12px;">Child Limit /Guardian : <strong>@p.ChildLimit</strong></p>
+			</div>
+			<div class="large-13 small-24 column">
+				<p>@p.Description</p>
+                @if(!User.Identity.IsAuthenticated) 
+                {    
+				    <a class="register-prog" data-reveal-id="anon-register">Login/Sign-up</a>
+                    <div id="anon-register" class="reveal-modal tiny" data-reveal>
+                        <h2>Please login or register to sign up for programs. </h2>
+                        <div style="padding:1em">
+                            <a href="/Account/Register" class="button small">Register</a>
+                            <a href="/Account/Login" class="button small secondary">Login</a>
+                        </div>
+                        <a class="close-reveal-modal">&#215;</a>
+                    </div>
+                }
+                else if (User.IsInRole("Guardian"))
+                {        
+                    if (p.Registered == false)
+                    {          
+                        <a class="button tiny" href="/Guardian/Register/@p.Id">Register</a>
+                    }
+                    else 
+                    {
+                        <a class="button tiny secondary" href="/Guardian/UnregisterProgram/@p.Id">Unregister</a>
+                    }
+                }
+			</div>
+		</div>
+    }
+    </div>
+</div>

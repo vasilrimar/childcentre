@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.ProgramList>
+
+
+@{
+    ViewBag.Title = "View Registered Programs";
+}
+
+<div class="row">
+    <div class="admin-nav large-5  column">
+        <h2><i class="icon-user"></i>Management Panel</h2>
+        <ul>
+            <li><a class="active"  href="/Guardian/ViewRegisteredPrograms">View Registered Programs</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>View Registered Programs</h2>
+        @if (Model.Count() == 0)
+        {
+            <p class="list-empty">You are not registered for any programs.</p>
+        }
+        <div class="active-programs-list large-24 columns">
+        @foreach (var p in Model)
+        {
+            <div id="@p.Id" class="list-item row">
+			    <div class="large-6 small-12 column">
+                    <div class="item-img">
+				        <img src="/Programs/Image/@p.Id">
+                    </div>
+			    </div>
+			    <div class="item-info large-8 small-12 column">
+				    <h3>@p.Name</h3>
+				    <span style="font-size:12px;">Every <strong>@p.DayOffered : @p.StartTime.ToShortTimeString() - @p.EndTime.ToShortTimeString() </strong></span>
+				    <p style="font-size:12px;">Child Limit /Guardian : <strong>@p.ChildLimit</strong></p>
+			    </div>
+			    <div class="large-10 small-24 column">                                   
+                    @if (p.Description.Length > 50)
+                    {
+                        <p><strong>Description: </strong> @p.Description.Substring(0, 90) ...</p>
+                    }
+                    else
+                    {
+                        <p><strong>Description: </strong> @p.Description</p>
+                    }
+			    </div>
+                <a class="button tiny secondary" href="/Guardian/Unregister/@p.Id">Unregister</a>
+		    </div>
+        }
+        </div>
+    </div>
+</div>
+

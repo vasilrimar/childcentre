@@ -1,0 +1,122 @@
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,600,300,200);
+/* General */
+html{background:url(/Images/bg.png)}
+body{background:url(/Images/bg.png);color:grey;font:16px/1.5em Arial}
+ul,li,form{list-style:none;margin:0}
+a > *{outline:none;margin:0}
+h1,h2,h3,h4,h5{margin:0; }
+
+
+/* Input Fields*/
+a {color:#9e9e9e}
+
+/* Validation Styles*/
+.validation-summary-errors li{margin-bottom:1em;background:#FF5C5C;color:#FFF;font-size:12px;padding:5px; padding-left:10px;}
+.list-empty{margin-bottom:0;font-size:14px;padding:1em}
+.success-message{display:none; border:none; padding:0.5em; font-weight:bold; background:#50d48b; color:white; margin-bottom:10px; font-size:13px;}
+.success-message i {margin-right:5px; font-size:15px;}
+.error input {border:solid 1px #d45053; }
+.error small.error {}
+[data-abide] small.error {background:#db5252; !important}
+
+button.small, .button.small {margin-left:0 !important; margin-right:5px;}
+
+/* Reveal Styles */
+.reveal-modal {padding:0 !important; display:none;}
+.reveal-modal img {max-width:140px}
+.reveal-modal .body {padding:1em}
+.reveal-modal .body p {font-size:13px; margin-bottom:5px;}
+.reveal-modal h2{font:1em Source Sans Pro; color:white; padding:1em; background:#424242;}
+.reveal-modal h3{font:1em Source Sans Pro}
+.reveal-modal img{margin-bottom:1em}
+
+/*Actions Bar*/
+.actions-bar {padding:0.5em; overflow:hidden;}
+/* Table Styles */
+table {margin:0; border:none; width:100%; }
+table thead {background:none; }
+table thead tr th {color:#565656; color:#707070; background:none}
+table tr:nth-of-type(2n) {background:none;}
+table tr:last-child td{border-bottom:none;}
+table tr th {text-align:left; border:solid 1px #DBDBDB; font-size:12px;}
+table tr th:first-child,  table td:first-child {border-left:none;}
+table tr th:last-child,  table td:last-child {border-right:none;}
+table tr td {color:#878787;  border:solid 1px #DBDBDB}
+
+table .operations  a {padding: 2px 5px; background:#E9E9E9; color:#;}
+table .operations a i {color:#333;}
+table .operations div {display:inline-block}
+input[type="search"] {margin-bottom:0;}
+
+table.tablesorter { width: 100%;}
+table.tablesorter thead tr .header { background: url(/Images/bg.gif) no-repeat center right; cursor: pointer; }
+table.tablesorter thead tr th:last-child { background:none;}
+table.tablesorter thead tr .headerSortDown { background: white url(/Images/desc.gif) no-repeat center right}
+table.tablesorter thead tr .headerSortUp { background: white url(/Images/asc.gif) no-repeat center right }
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp { background-color: white; }
+table #search-field {margin:0 !important; }
+/* Header */
+section.header{border-bottom:solid 1px #c5c5c5;background:#424242; color:#F5F5F5; box-shadow:0 0 5px rgba(0,0,0,0.2)}
+section.header .row{padding:1em 0}
+section.header a{outline:none; color:#EBEBEB}
+section.header .top-nav li{float:left;line-height:2em;padding:0 1.5em}
+.top-nav li a{text-transform:upperface;font-size:.8em;transition:all ease-in .25s}
+.top-nav .selected,.top-nav a:hover,a.selected i{color:#fb765b}
+.header-actions a:last-child{margin-left:.5em}
+.header-actions-log > a{text-align:right;margin-left:1em}
+.header-actions-log i{font-size:1.75em;transition:all ease-in .25s}
+.header-actions-log .notifications{background:#fb765b;border-radius:50% 50 50% 50%;text-align:top;font-size:1.2em;color:#FFF;position:relative;bottom:.15em;padding:.2em .45em}
+.f-dropwdown{text-align:left}
+.f-dropdown h5{font-weight:300;font-size:1em;border-bottom:solid 1px #ccc;cursor:default;padding:.5em}
+.f-dropdown .notify{font-size:.75em;padding:.5em}
+.f-dropdown li:hover{background:#FFF}
+.f-dropdown li a {color:#555; !important}
+#loginForm form i{background:#fc6246;color:#FFF;display:inline-block;width:15%;padding:.5em}
+#loginForm form input{display:inline-block;width:84.5%;border-radius:0 3px 3px 0}
+#loginForm form input:focus{box-shadow:none;border:solid 1px #fc6246}
+#loginForm .forgot-pass{float:left;color:grey;font-size:.75em;line-height:3.5em}
+#loginForm .forgot-pass:hover{color:#afafaf}
+#loginForm .login-button i{font-size:2em}
+.notes li{padding:.5em}
+#roleModal a{display:block;line-height:2em;color:grey}
+#registerModal div.large-12:nth-child(1){padding-right:.625em}
+
+/* Administration Panel Styles*/
+.admin-nav {border:solid 1px #e3e3e3; background:white; box-shadow:0px 4px 10px rgba(0, 0, 0, 0.1) }
+.admin-nav h2 {font:16px Source Sans Pro; margin:0; background:#f3f3f3; color:#424242; font-weight:bold; border-bottom:solid 1px #e3e3e3; padding:0.75em}
+.admin-nav h2 i {margin-right:0.5em;}
+.admin-nav ul li {font-size:14px; border-bottom:solid 1px #e3e3e3}
+.admin-nav a {display:block; color:grey;  padding:0.5em; }
+.admin-nav a:hover{color:#FB765B}
+.admin-nav a.active {color:#f87d6d; box-shadow:inset -5px 0 0 #f87d6d}
+
+.admin-content {border:solid 1px #e3e3e3;background:white; box-shadow:0px 4px 10px rgba(0, 0, 0, 0.1)}
+.admin-content .row .large-12:first-child {padding-right:0.5em}
+.admin-content .row .large-12:last-child {padding-left:0.5em}
+.admin-content h2 {font:16px Source Sans Pro; font-weight:bold; margin:0; background:#f3f3f3; color:#424242; padding:0.75em;  border-bottom:solid 1px #e3e3e3;}
+.admin-content h2 .button {padding:5px 7.5px; margin-right:15px; margin-left:0;}
+.admin-content h3 {font:16px Source Sans Pro; color:#707070; font-weight:bold;  margin-bottom:1em}
+.admin-body { padding:1em;}
+.button, a.button { background:#F87D6D; color:white; box-shadow:none; border:none; font-weight:300; font-size:12px; margin-left:10px !important}
+
+/* Main Container */
+#content{padding:2em 0;}
+.breadcrumbs{background:none;border:none; border-bottom:solid 1px #DBDBDB;margin-bottom:0;padding:1em}
+.container{border:solid 1px #e0e0e0;background:#FFF}
+.container .main{padding:1em}
+.container h1{font:2em Source Sans Pro;font-weight:300; margin-bottom:10px;}
+.container fieldset{border:solid 1px #efefef}
+
+/* Footer */
+#footer {margin-top:25px;}
+#footer p{line-height:.75em;font-size:.75em;color:#bdbdbd}
+#footer h5{font:14px Arial;font-weight:300;color:#797979;margin-bottom:1em}
+#footer ul{list-style:none;margin-bottom:0}
+#footer ul li{color:#797979;font-size:.75em}
+#footer ul li a{color:#797979}
+#footer ul li a:hover{color:#fc6344;text-decoration:underline}
+a.button,.header-actions a{margin:0}
+.header .top-nav ul,.header .header-actions,.header-actions-log,#loginForm .login-button{float:right}
+.header-actions-log i:hover,.f-dropdown a:hover{color:#fc6344}
+#roleModal p,#registerModal h2{font:2em Source Sans Pro;color:#fc6344}

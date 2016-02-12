@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Child Centre</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="~/Content/font-awesome/css/font-awesome.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="/Content/css/jquery.jqplot.css" />
+        @Styles.Render("~/css/default")
+    </head>
+<body>
+
+    <!---------------- Header ---------------->
+
+    <section class="header">
+        <div class="row">
+            <div class="logo large-6 small-6 column">
+	            <a href="/"><img src="/Images/logo.png" alt="logo"/></a>
+            </div>
+            <div class="top-nav large-12 small-12 column">
+	            <ul>
+		            <li><a href="/">Home</a></li>
+		            <li><a href="/About/">About Us</a></li>
+		            <li><a href="/Programs/">Programs</a></li>
+		            <li><a href="/Contact/">Contact</a></li>
+	            </ul>
+            </div>
+            <div class="large-6 small-6 column">
+                @if (User.Identity.IsAuthenticated)
+                {       
+                    <div class="header-actions-log">    
+                        <span style="font-size:14px; position:relative; top:-5px;">Hello, <strong>@HttpContext.Current.User.Identity.Name</strong></span>
+				        <a href="#" data-dropdown="dropdown-account"><i class="icon-user"></i></a>
+				        <div id="dropdown-account" class="f-dropdown tiny" data-dropdown-content>
+					        <ul>
+						        <li><h5>Account</h5></li>
+						        <li><a href="/Account/ChangePassword">Change Password</a></li>
+						        <li><a href="/Account/ChangeProfile">Change Profile</a></li>
+						        <li>
+                                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                                        @Html.AntiForgeryToken()
+                                        <a class="logout" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                    }
+                                <li>
+					        </ul>
+				        </div>
+				        <a href="#" data-dropdown="dropdown-manage"><i class="icon-gears"></i></a>
+				        <div id="dropdown-manage" class="f-dropdown tiny" data-dropdown-content>
+					        <ul>
+						        <li><h5>Manage</h5></li>
+                                @if(User.IsInRole("Guardian"))
+                                {
+                                    <li><a href="/Guardian/ViewRegisteredPrograms">View Registered Programs</a></li>
+                                }
+                                @if (User.IsInRole("ProgramWorker"))
+                                {
+                                    <li><a href="/ProgramWorker/TakeAttendance">Take Attendance</a></li>
+                                    <li><a href="/ProgramWorker/ManageDrafts">Manage Drafts</a></li>
+                                }
+                                else if (User.IsInRole("Supervisor"))
+                                {
+                                    <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+                                    <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+                                    <li><a href="/Supervisor/ManagePrograms">Manage Programs</a></li>
+                                    <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+                                }
+					        </ul>
+				        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="header-actions">
+                        <a style="color:white" class="tiny button" href="/Account/Register">Register</a>
+                        <a class="tiny button secondary" href="/Account/Login">Login</a>
+                    </div>  
+                }
+                </div>
+        </div>
+    </section>
+    <!---------------- Body Content ---------------->
+    <section id="content">
+        @RenderBody()
+    </section>
+
+   <!---------------- Footer ---------------->
+    <!--
+    <section id="footer" class="row">
+		    <div class="push-5 large-19 column">
+			    <ul class="footer-list inline-list">
+                    <li>© 2014 Child Centre</li>
+                    <li> | </li>
+				    <li><a href="/">Home</a></li>
+				    <li><a href="/About/">About</a></li>
+				    <li><a href="/Programs/">Programs</a></li>
+				    <li><a href="/Contact">Contact</a></li>
+                    <li><a href="index.html">Our Policy</a></li>
+				    <li><a href="index.html">Site Map</a></li>
+			    </ul>
+		    </div>
+    </section> -->
+<script src="~/Scripts/vendor/jquery/custom.modernizr.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.abide.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.alert.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.dropdown.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.reveal.js"></script>
+<script src="~/Scripts/vendor/foundation/foundation.tooltip.js"></script>
+<script src="~/Scripts/jquery.tablesorter.min.js"></script>
+<script src="/Scripts/jquery.sieve.min.js"></script>
+<script src="/Scripts/isotope.pkgd.min.js"></script>
+<script src="/Scripts/jquery.jqplot.min.js"></script>
+<script src="/Scripts/jqplot.highlighter.min.js"></script>
+<script src="/Scripts/jqplot.cursor.min.js"></script>
+<script src="/Scripts/jqplot.dateAxisRenderer.min.js"></script>
+<script>
+    $(document)
+    .foundation()
+    .foundation('abide', {
+        patterns: {
+            short_field: /^.{,40}$/,
+            long_field: /^.{,1}$/
+        }
+    });
+    $("#sortable").tablesorter();
+    $(document).ready(function () {
+        $("table").sieve();
+        $(".attendance-list").sieve({ itemSelector: "div" });
+
+        var $container = $('.active-programs-list');
+
+        $container.isotope({
+            filter: '*',
+            animationOptions: {
+                duration: 750,
+                easing: 'linear',
+                queue: false
+            }
+        });
+
+        $('.program-filters a').click(function () {
+            $('.projects-filters a.active').removeClass('active');
+            $(this).addClass('active');
+
+            var selector = $(this).attr('data-filter');
+            $container.isotope({
+                filter: selector,
+                animationOptions: {
+                    duration: 750,
+                    easing: 'linear',
+                    queue: false
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+</body>
+</html>

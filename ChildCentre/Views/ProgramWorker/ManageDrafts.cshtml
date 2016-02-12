@@ -1,0 +1,157 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.ProgramDraft>
+
+@{
+    ViewBag.Title = "Manage Drafts";
+}
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Worker Panel</h2>
+        <ul>
+            <li><a href="/ProgramWorker/TakeAttendance/">Take Attendance</a></li>
+            <li><a class="active" href="/ProgramWorker/ManageDrafts/">Manage Drafts</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>Manage Drafts / </h2>
+        @if (Model.Count() == 0)
+        {
+            <p class="list-empty">No programs created yet.
+                <a id="addDraft" href="/ProgramWorker/AddDraft/"><i class="icon-plus"></i> Add Draft</a>
+            </p>          
+        }
+        else
+        {
+            <div class="actions-bar">
+                <div class="large-8 column">
+                    <input name="search" id="search-field" type="search" placeholder="Search Program Drafts..." />
+                </div>
+                <div class="large-12 column">
+                    <a id="addDraft" class="right button secondary tiny" href="/ProgramWorker/AddDraft/"><i class="icon-plus"></i> Add Draft</a>
+                </div>
+            </div>
+            <table id="sortable" class="tablesorter">
+                <thead>
+                <tr class="table-heading">
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Date Created</th>
+                    <th>Last Updated</th>
+                    <th>
+
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.Name</td>
+                        <td>
+                            @if (a.Status == ChildCentre.Models.Status.PendingReview)
+                            {
+                                <span class="status-@a.Status">Pending Review</span>
+                            }
+                            @if (a.Status == ChildCentre.Models.Status.Returned)
+                            {
+                                <span class="status-@a.Status">Returned for Review</span>
+                            }
+                            @if(a.Status == ChildCentre.Models.Status.Active)
+                            {
+                                <span class="status-@a.Status">Approved</span>
+                            }
+                            @if (a.Status == ChildCentre.Models.Status.Editing)
+                            {
+                                <span class="status-@a.Status">@a.Status</span>
+                            } 
+                        </td>
+                        <td>@a.DateCreated.ToString("MMMM dd, yyyy")</td>
+                        <td>@a.LastUpdated.ToString("MMMM dd, yyyy")</td>
+                        <td class="operations">
+                            @if (a.Status == ChildCentre.Models.Status.PendingReview || a.Status == ChildCentre.Models.Status.Active)
+                            {
+                                <a href="#" class="view hint--bottom" data-reveal-id="view-draft-@a.Id" data-hint="View Draft"><i class="icon-eye-open"></i></a>
+                                <div id="view-draft-@a.Id"  class="reveal-modal tiny" data-reveal>
+                                    <h2>View Draft : <strong>@a.Name</strong> </h2>
+                                        <div class="body row">
+	                                        <div class="large-8 column">
+		                                        <img src="/Programs/Image/@a.Id"/>
+	                                        </div>
+
+                                            <div class="large-24 column">
+                                                <h3>Description:</h3>
+		                                        <p>@a.Description</p>
+                                            </div>
+                                        </div>
+                                    <a class="close-reveal-modal">&#215;</a>
+                                </div>
+                            }                
+                            @if (a.Status == ChildCentre.Models.Status.Returned || a.Status == ChildCentre.Models.Status.Active)
+                            {
+                                <a href="#" class="review hint--bottom" data-hint="View Supervisor Comments" data-reveal-id="s-comments-@a.Id"><i class="icon-comments"></i></a>
+                                <div id="s-comments-@a.Id" class="reveal-modal tiny" data-reveal>
+                                    <h2>View Supervisor Comments : <strong>@a.Name</strong> </h2>
+                                    <div class="body">
+	                                    <h3>Date Reviewed</h3>
+	                                    <p>@a.LastUpdated</p>
+	                                    <h3>Supervisor Comments</h3>
+                                        @if (!String.IsNullOrEmpty(a.supervisorComments))
+                                        {
+	                                        <p>@a.supervisorComments </p>
+                                        }
+                                        else
+                                        {
+                                            <p><i>No comments to display.</i></p>
+                                        }
+                                    </div>
+	                                <a class="close-reveal-modal">&#215;</a>
+                                </div>
+                            } 
+                            @if (a.Status == ChildCentre.Models.Status.Editing || a.Status == ChildCentre.Models.Status.Returned)
+                            {
+                                <a href="/ProgramWorker/EditDraft/@a.Id" class="edit hint--bottom" data-hint="Edit Draft" ><i class="icon-edit"></i></a>
+				                <a href="#" onclick="deleteDraft(@a.Id); return false;" class="delete hint--bottom" data-hint="Remove Draft" ><i class="icon-remove"></i></a>
+                            }
+                            @if (a.Status == ChildCentre.Models.Status.PendingReview)
+                            {
+                                <a href="#" onclick="cancelDraft(@a.Id); return false;"  class="edit hint--bottom" data-hint="Cancel Draft" ><i class="icon-ban-circle"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<script>
+
+    function deleteDraft(id) {
+        if (confirm('Are you sure you want to delete this draft?')) {
+            $.ajax({
+                url: '/ProgramWorker/DeleteDraft/',
+                data: {
+                    id: id,
+                },
+                type: 'POST',
+                success: function (data) {
+                    window.location = '/ProgramWorker/ManageDrafts/';
+                },
+            });
+        }
+    }
+    function cancelDraft(id) {
+        if (confirm('Are you sure you want to cancel this draft?')) {
+            $.ajax({
+                url: '/ProgramWorker/CancelDraft/',
+                data: {
+                    id: id,
+                },
+                type: 'POST',
+                success: function (data) {
+                    window.location = '/ProgramWorker/ManageDrafts/';
+                },
+            });
+        }
+    }
+</script>
+

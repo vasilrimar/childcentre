@@ -1,0 +1,73 @@
+﻿@model ChildCentre.Models.Program
+
+@{
+    ViewBag.Title = "Edit Program " + Model.Name;
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a class="active" href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2><a href="/Supervisor/ManagePrograms/">Manage Programs</a> / Edit "@Model.Name"</h2>
+        <div class="large-14 column" style="padding:1em">
+            <div style="@TempData["isSuccess"]" data-alert class="success-message alert-box">
+                <i class="icon-ok-circle"></i>
+                <span>Program successfully updated!</span>
+                <a href="#" class="close">&times;</a> 
+            </div>
+            @using (Html.BeginForm("EditProgram", "Supervisor",
+                FormMethod.Post, new {id = Model.Id, enctype = "multipart/form-data", data_abide = ""}))
+            {
+                @Html.ValidationSummary()
+                <div style="width:200px">
+                    <img style="margin-bottom:1em;" src="/Programs/Image/@Model.Id" />
+                </div>
+                <div>
+                       
+                </div>
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.Name)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.Name, new { required = "" })
+                    <small class="error">A name is required</small>
+                </div>
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.Description)<small> required</small></label>
+                    @Html.TextAreaFor(m => m.Description, new { required = "", style="height:150px" })
+                    <small class="error">A description is required</small>
+                </div>
+                @Html.TextBoxFor(m => m.Id, new { style = "display: none;" });
+                <div>
+                    <label for="DayOffered">Day of the week: </label>
+                     @Html.DropDownList("Days") 
+                </div>
+                <div>
+                    <label for="StartTime">Program Start Time: </label>
+                    @Html.DropDownList("StartTimes")
+                </div>
+                <div>
+                    <label for="EndTime">Program End Time: </label>
+                    @Html.DropDownList("EndTimes")
+                </div>
+                <div>
+                    <label for="ChildLimit">Child Limit per Guardian: </label>
+                    <select name="ChildLimit">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <input style="margin-left:0 !important;" type="submit" value="Save" class="button tiny" />
+                <a href="/Supervisor/ManagePrograms/" class="button tiny secondary right">Cancel</a>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+﻿@model ChildCentre.ViewModels.ProgramSupervisor
+
+@{
+    ViewBag.Title = "Accept Draft";
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a class="active" href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2><a href="/Supervisor/ManagePrograms/">Manage Programs</a> / Accept Draft / "@ViewBag.Name" </h2>
+        <div class="admin-body large-14 column">
+            <form action="/Supervisor/AcceptDraft/@ViewBag.Id" data-abide method="POST" enctype="multipart/form-data" >
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+                <div>
+                    <label for="DayOffered">Day of the week: </label>
+                    <select name="DayOffered" required>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="StartTime">Program Start Time: </label>
+                    <select name="StartTime" required>
+                        <option value="12">12:00 PM</option>
+                        <option value="13">1:00 PM</option>
+                        <option value="14">2:00 PM</option>
+                        <option value="15">3:00 PM</option>
+                        <option value="16">4:00 PM</option>
+                        <option value="17">5:00 PM</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="EndTime">Program End Time: </label>
+                    <select name="EndTime" required>
+                        <option value="13">1:00 PM</option>
+                        <option value="14">2:00 PM</option>
+                        <option value="15">3:00 PM</option>
+                        <option value="16">4:00 PM</option>
+                        <option value="17">5:00 PM</option>
+                        <option value="18">6:00 PM</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="ChildLimit">Child Limit per Guardian: </label>
+                    <select name="ChildLimit">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <input type="submit" class="button small" value="Publish Program" />
+                <a href="/Supervisor/ManagePrograms/" class="button small secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+	

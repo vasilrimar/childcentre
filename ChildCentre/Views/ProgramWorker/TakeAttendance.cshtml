@@ -1,0 +1,92 @@
+﻿@model ChildCentre.ViewModels.AttendanceModel
+
+@{
+    ViewBag.Title = "TakeAttendance";
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Worker Panel</h2>
+        <ul>
+            <li><a class="active" href="/ProgramWorker/TakeAttendance/">Take Attendance</a></li>
+            <li><a href="/ProgramWorker/ManageDrafts/">Manage Drafts</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>Take Attendance / </h2>
+        @if (Model.CurrentProgram != null)
+        {
+            <div class="attendance-title row">
+                <div class="large-16 column">
+                    <p>Current Date & Time : @TimeZoneInfo.ConvertTime(DateTime.Now, ChildCentre.Models.Global.timeZoneInfo)</p>
+                    <p>Day of week : <strong>@Model.CurrentProgram.DayOffered</strong></p>
+                    <span>Current Program: <strong>@Model.CurrentProgram.Name</strong>
+                            <a href="#" class="hint--bottom" data-reveal-id="info" data-hint="Attendance Info" > <i class="icon-info-sign"></i></a>
+                    </span>
+                    <div style="display:none;" id="info"  class="reveal-modal tiny" data-reveal>
+                        <h2>Attendance Information</h2>
+                        <p style="font-size:13px; padding:1em;">The attendance sheet will show the program
+                            that is running at the current time and day of the week.
+                            To prevent user error, no attendance sheet will be shown if there is no
+                            particular program on today's day of week and current time.
+
+                        </p>          
+                        <a class="close-reveal-modal">&#215;</a>
+                    </div>
+                    <p>Time of Program: <strong>@Model.CurrentProgram.StartTime.ToString("t") - @Model.CurrentProgram.EndTime.ToString("t")</strong> </p>
+                </div>
+                <div class="large-8 column">
+                    <input name="search" id="search-field" type="search" placeholder="Search Guardians..." />
+                </div>
+            </div>
+            <div class="attendance-list row">
+            @if (Model.AttendanceList.Count() > 0)
+            {
+                foreach (var g in Model.AttendanceList)
+                {	
+				    <div class="list-item large-12 column">
+					    <p class="left">@g.GivenName @g.LastName</p>
+                        @if (g.Attended == false)
+                        {
+					        <a id="@g.UserName" class="right not-signed" onclick="toggleSign('@g.UserName'); return false;" href="#" >Sign-In</a>
+                        }
+                        else
+                        {
+                            <a id="@g.UserName" class="right user-signedin-color" onclick="toggleSign('@g.UserName');" href="#" >Undo</a> 
+                        }
+				    </div>
+                }
+            }
+            else
+            {
+                <p class="list-empty">No guardians registered for current program.</p>
+            }
+            </div>
+        }
+        else
+        {
+            <p style="margin:0;" class="list-empty"><strong>Current Date & Time : </strong> @TimeZoneInfo.ConvertTime(DateTime.Now, ChildCentre.Models.Global.timeZoneInfo)</p>
+            <p class="list-empty"> No current program running at this time of the day.</p>
+        }
+    </div>
+</div>
+<script>
+    function toggleSign(username) {
+        $.ajax({
+            url: '/ProgramWorker/ToggleSignIn/',
+            data: {
+                username: username,
+            },
+            type: 'POST',
+            success: function (data) {
+                var toggle = $('#' + username);
+           
+                if (toggle.hasClass("user-signedin-color"))
+                    toggle.html('Sign-in');
+                else toggle.html('Undo');
+                toggle.toggleClass("user-signedin-color");
+            },
+        });
+    }
+</script>
+        

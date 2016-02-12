@@ -1,0 +1,94 @@
+﻿@model ChildCentre.ViewModels.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<div id="register" class="container row">
+    <div class="main">
+	<h1>Create an Account</h1>
+	<p> Sign up to register for programs to attend!</p>
+	<p> Already have an account? Sign in <a href="/Account/Login">HERE</a></p>
+	@using (Html.BeginForm("Register", "Account",
+        FormMethod.Post, htmlAttributes: new { data_abide="" })) 
+    {     
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+	<div class="row">
+		<div class="large-12 column" style="padding-right:10px;">
+			<fieldset>            
+				<legend>Account Information</legend>	
+				<div>
+                    <label>@Html.DisplayNameFor(m => m.UserName)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.UserName, new { required = "", pattern="alpha_numeric",maxlength="15" })
+                    <small class="error">Required field. Only letters and numbers & max of 15 characters.</small>
+                </div>           
+				<div class="row">
+                    <div class="large-12 column">
+                        <label>@Html.DisplayNameFor(m => m.Password)<small> required</small></label>
+                        @Html.PasswordFor(m => m.Password, new { required = "", pattern=".{6,}" })
+                        <small class="error">Minimum of 6 characters</small>
+                    </div>
+					<div class="large-12 column">
+                        <label>@Html.DisplayNameFor(m => m.ConfirmPassword)<small> required</small></label>
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { required = "", data_equalto="Password" })
+                        <small class="error">Passwords do not match</small>
+                    </div>
+				</div>
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.Email)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.Email, new { required = "", pattern="email"  })
+                    <small class="error">Enter a correct email</small>
+                </div> 
+			</fieldset>
+		</div>
+		<div class="large-12 column" style="padding-left:7.5px;">
+            <fieldset>
+				<legend>Personal Information</legend>
+				<div>
+                    <label>@Html.DisplayNameFor(m => m.GivenName)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.GivenName, new { required = "", pattern="alpha", maxlength="20" })
+                    <small class="error">Required field. Only letters, max of 20 characters</small>
+                </div>  
+				<div>
+                    <label>@Html.DisplayNameFor(m => m.LastName)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.LastName, new { required = "", pattern="alpha", maxlength="20" })
+                    <small class="error">Required field. Only letters, max of 20 characters</small>
+                </div>
+                <div>
+				    @Html.LabelFor(m => m.Address.StreetName)
+                    @Html.TextBoxFor(m => m.Address.StreetName, new { pattern="[a-zA-Z0-9 ]+" })
+                    <small class="error">Only letters and numbers</small>
+                </div>
+				<div class="row">
+					<div class="large-12 column">
+						@Html.LabelFor(m => m.Address.City)
+                        @Html.TextBoxFor(m => m.Address.City, new { pattern="alpha" })
+                        <small class="error">Only letters and numbers</small>
+					</div>
+					<div class="large-12 column">
+						@Html.LabelFor(m => m.Address.PostalCode)
+                        @Html.TextBoxFor(m => m.Address.PostalCode, new { pattern="alpha_numeric" })
+                        <small class="error">Only letters and numbers</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-12 column">
+						<label>@Html.DisplayNameFor(m => m.PrimaryPhone)<small> required</small></label>
+                        @Html.TextBoxFor(m => m.PrimaryPhone, new { required="", pattern = "integer", maxlength="10" })
+                        <small class="error">Enter a valid number</small>
+					</div>
+					<div class="large-12 column">
+                        <label>@Html.DisplayNameFor(m => m.SecondaryPhone)</label>
+                        @Html.TextBoxFor(m => m.SecondaryPhone, new { pattern = "integer", maxlength="10" })
+                        <small class="error">Enter a valid phone number</small>
+					</div>
+				</div>
+            </fieldset>
+		</div>
+		<input type="submit" class="button right" value="Submit" />
+	</div>
+    }
+</div>
+</div>
+
+

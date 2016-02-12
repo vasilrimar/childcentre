@@ -1,0 +1,33 @@
+﻿@model ChildCentre.ViewModels.ProgramSupervisorDeny
+
+@{
+    ViewBag.Title = "Deny Draft";
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a class="active" href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2><a href="/Supervisor/ManagePrograms/">Manage Programs</a> / Deny Draft / "@ViewBag.Name" </h2>
+        <div class="admin-body large-20 column">
+            <form action="/Supervisor/DenyDraft/@ViewBag.Id" data-abide method="POST" enctype="multipart/form-data" >
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.supervisorComments)<small> required</small></label>
+                    @Html.TextAreaFor(m => m.supervisorComments, new { required = "", style="height:200px" })
+                    <small class="error">Please enter some feedback</small>
+                </div>
+                <input type="submit" class="button small" value="Deny" />
+                <a href="/Supervisor/ManagePrograms/" class="button small secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@model ChildCentre.ViewModels.LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+<div style="width:25%;  box-shadow:0px 4px 10px rgba(0, 0, 0, 0.2)" class="container row">
+    <h1 style="border-bottom:solid 1px #E0E0E0; padding:0.25em; text-align:center; color:#424242; background:#f1f1f1">Member Login</h1>
+    <div class="main large-24 column">
+        <div class="large-24 column">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl })) 
+            {
+                @Html.AntiForgeryToken()
+            
+                @Html.ValidationSummary(true)         
+                @Html.TextBoxFor(m => m.UserName, new { placeholder = "Username", @class= "username"})
+                    
+                @Html.PasswordFor(m => m.Password, new { placeholder = "Password", @class= "password"} )
+                <input style="margin-bottom:0" type="submit" class="button small right" value="Log in" />
+            }
+        </div>
+    </div>
+</div>

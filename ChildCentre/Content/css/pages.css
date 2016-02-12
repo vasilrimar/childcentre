@@ -1,0 +1,85 @@
+﻿/* HOME PAGE*/
+
+.home-program-list .program{ padding:1em; }
+.home-program-list .program h4 {font:22px Source Sans Pro;color:#747474; margin-bottom:5px;}
+.home-program-list .program a {position: absolute;left: 60%;top: 77%;width: 100px;}
+.home-program-list .program p{padding-left:10px;font-size:13px;}
+
+/* ABOUT PAGE */
+
+#about .about-mission{border-bottom:solid 1px #f2f2f2;padding:1em 0 0 1em;}
+#about .about-vision{border-bottom:solid 1px #f2f2f2;padding:3em 0 2em 1em;}
+#about ul li i{width:10%;margin-right:-1em;color:#fb765b;}
+#about ul li span{float:right;width:90%;}
+
+/* CONTACT PAGE */
+
+#success{display:none;background:#5da423;color:#FFF;padding:1em;}
+#error{display:none;margin-bottom:1em;background:#c60f13;color:#FFF;padding:1em;}
+#contact h2{font-size:1.55em;margin-bottom:.75em;color:#fc6344;font-family:Source Sans Pro;}
+#contact h5{color:#fc6344;font:1.25em Source Sans Pro;margin-bottom:.75em;}
+#contact p{font-size:.75em;line-height:1em;}
+#contact textarea{height:10em;}
+#map_canvas{width:100%;height:100%;margin-bottom:2em;background:#FFF;}
+#map{width:100%;height:300px;border:solid 1px #c7c7c7;}
+
+/* Staff List */
+
+/* ATTENDANCE SIGN IN PAGE s*/
+
+.signin-left{background:#FFF;border-radius:5px;padding:1em;}
+.signin-left .date{font-size:.75em;text-decoration:underline;margin-bottom:.5em;}
+.signin-left span{display:block;font-size:13px;}
+.signin-left .current-program{background:#fc6344;color:#FFF;border-radius:3px;font-size:12px;display:inline;padding:.25em .35em;}
+.attendance-right{border-left:solid 1px #E8E8E8;}
+.attendance-right .heading{font:18px Source Sans Pro;border-bottom:solid 1px #E8E8E8;margin:0;padding:.5em;}
+.attendance-right .heading h3{font:18px Source Sans Pro;margin-top:.25em;}
+.attendance-list .list-item{border-bottom:solid 1px #E8E8E8;padding:.5em; float:left !important;}
+.attendance-list .list-item:last-child{border-bottom:none;padding:.5em;}
+.attendance-list .list-item:nth-child(2n+1){border-right:solid 1px #E8E8E8;}
+.attendance-list .list-item p{font-size:13px;margin-top:5px;margin-bottom:0;}
+.attendance-list a.user-signedin-color{background:#77c338;color:#FFF;font-size:12px; padding:0 5px; border:solid 1px #77c338; transition:all .55s;-moz-transition:all .55s;-webkit-transition:all .55s;-o-transition:all .55s;}
+.attendance-title {padding:10px;; font-size:13px; border-bottom:solid 1px #E8E8E8; }
+.attendance-title p { font-size:13px; margin-bottom:0;}
+.attendance-title i { font-size:16px; margin-left:10px; color:#F87D6D;}
+.attendance-list a {background:#f2f2f2;color:grey; font-size:12px; padding:0 5px; border:solid 1px #E8E8E8; }
+
+/* PROGRAM LIST */
+
+.sort{padding-left:.5em;background:url(../img/sort_bg.png);border-radius:5px;border:solid 1px #dedede;margin-bottom:1em;}
+.sort span{font-size:.85em;font-family:Arial;}
+.sort a{display:inline-block;font-size:.85em;color:#989898;border-right:solid 1px #eee;padding:.65em;}
+.sort a.selected{color:#fc6344;border-radius:3px;}
+.active-programs-list{background:#FFF;}
+.program-filters{border-bottom:solid 1px #DBDBDB}
+.program-filters a{padding-right:1em; border-right:solid 1px #DBDBDB; float:left; padding:10px; font-size:13px; }
+.list-item{border-bottom:solid 1px #f2f2f2;padding:1em; font-size:13px}
+.list-item:last-child{border:none;}
+.list-item p {font-size:13px;}
+.list-item .item-info{}
+.list-item .item-info h3{font:22px Source Sans Pro;color:#747474;}
+.list-item .item-img{width:162px;height:120px;border:solid 1px #f2f2f2;}
+.list-item .item-img img{height:100%;width:100%;}
+.active-programs-list .list-item a{float:right;font-size:12px;}
+.drafts-sort{background:#FFF;border:solid 1px #e8e8e8;border-bottom:0;border-radius:5px;box-shadow:inset 0 1px 0 #FFF;margin:15px 0 0 15px;}
+.drafts-sort h3{font-size:1em;color:#fc6344;border-bottom:solid 1px #e8e8e8;margin:0;padding:.5em;}
+.drafts-sort .button{display:block;}
+.drafts-sort ul li a{color:grey;display:block;border-bottom:solid 1px #e8e8e8;outline:none;padding:.5em;}
+.drafts-sort ul li a:hover{color:#FFF;background:#fc6344;}
+.drafts-sort .selected{border-right:solid 3px #fc6344;}
+.programdrafts .draft h3{font-size:1em;color:grey;line-height:5em;}
+.programdrafts .draft p{font-size:.75em;line-height:2.5em;color:grey;margin:0;}
+.programdrafts .heading h3{font-size:1em;line-height:2em;color:#fc6344;}
+.new-draft .row{margin-bottom:1em;}
+.new-draft .image-upload{background:#FFF;border:solid 1px #c7c7c7;text-align:center;padding:2em;}
+.new-draft .upload{margin-top:1em;}
+.new-draft textarea{height:15em;}
+.status-Active{color:#719b00;}
+.status-Inactive{color:red;}
+.status-PendingReview{color:#bdbdbd;}
+.status-Returned{color:#b91f00;}
+#home,#about .about-commitments,#contact{padding:1em;}
+
+.attendance-right .heading input,.drafts-sort ul{margin:0;}
+.sort a:hover,span.status-Editing{color:#fc6344;}
+.programdrafts .draft,.programdrafts .heading{border:solid 1px #e8e8e8;border-top:none;background:#FFF;padding:.5em .5em .5em 1em;}

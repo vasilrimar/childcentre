@@ -1,0 +1,55 @@
+﻿@model ChildCentre.ViewModels.ProgramDraftUpdate
+
+@{
+    ViewBag.Title = "Edit " + Model.Name;
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Worker Panel</h2>
+        <ul>
+            <li><a href="/ProgramWorker/TakeAttendance/">Take Attendance</a></li>
+            <li><a class="active" href="/ProgramWorker/ManageDrafts/">Manage Drafts</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2><a href="/ProgramWorker/ManageDrafts/">Manage Drafts</a> / Edit "@Model.Name"</h2>
+        <div class="large-14 column" style="padding:1em">
+            <div style="@TempData["isSuccess"]" data-alert class="success-message alert-box">
+                <i class="icon-ok-circle"></i>
+                <span>Draft successfully saved!</span>
+                <a href="#" class="close">&times;</a> 
+            </div>
+            @using (Html.BeginForm("EditDraft", "ProgramWorker",
+                FormMethod.Post, new {id = Model.Id, enctype = "multipart/form-data", data_abide = ""}))
+            {
+                @Html.ValidationSummary()
+                <div style="width:200px">
+                    <img style="margin-bottom:1em;" src="/Programs/Image/@Model.Id" />
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.File)
+                    @Html.TextBoxFor(m => m.File, new { type = "file" })     
+                </div>
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.Name)<small> required</small></label>
+                    @Html.TextBoxFor(m => m.Name, new { required = "" })
+                    <small class="error">A name is required</small>
+                </div>
+                <div>
+                    <label>@Html.DisplayNameFor(m => m.Description)<small> required</small></label>
+                    @Html.TextAreaFor(m => m.Description, new { required = "", style="height:200px" })
+                    <small class="error">A description is required</small>
+                </div>
+                <div>
+                    @Html.LabelFor(m => m.pwComments)
+                    @Html.TextAreaFor(m => m.pwComments, new { style = "height:200px" })
+                </div>
+                @Html.TextBoxFor(m => m.Id, new { style = "display: none;" });
+                <input style="margin-left:0 !important;" class="button tiny" type="submit" name="Action" value="Propose"  />
+                <input type="submit" name="Action" value="Save" class="button tiny" />
+                <a href="/ProgramWorker/ManageDrafts/" class="button tiny secondary right">Cancel</a>
+            }
+        </div>
+    </div>
+</div>

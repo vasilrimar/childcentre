@@ -1,0 +1,150 @@
+﻿@model Tuple<IEnumerable<ChildCentre.Models.AttendanceSheet>, ChildCentre.Models.Program>
+
+@{
+    ViewBag.Title = "Program Report";
+    DateTime currentMonth = new DateTime(1999, 12, 10);
+    int totalAttended = Model.Item1.Sum(x => x.Guardians.Count);
+    int totalRegistered = Model.Item1.Sum(x => x.TotalRegistered);
+    List<ChildCentre.ViewModels.ReportGraph> list = new List<ChildCentre.ViewModels.ReportGraph>();
+    List<ChildCentre.ViewModels.ReportGraph> list2 = new List<ChildCentre.ViewModels.ReportGraph>();
+    System.Web.Script.Serialization.JavaScriptSerializer javaSerial = new
+    System.Web.Script.Serialization.JavaScriptSerializer();
+    
+}
+
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a class="active" href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+
+    <div class="admin-content large-18 column">
+        <h2>Generate Report / @Model.Item2.Name </h2>
+         <!--<div class="actions-bar">
+            <div class="large-24 column">
+              <a href="#" class="view hint--bottom right" data-reveal-id="viewRegistered"><i class="icon-bar-chart"></i> Registered</a>
+               <div id="viewRegistered"  class="reveal-modal small" data-reveal>
+                   <h2>Registered Guardians Chart vs Session</h2>
+                    <div id="chart1"></div>
+                    <a class="close-reveal-modal">&#215;</a>
+                </div>
+            </div> 
+        </div>-->
+        @if (Model.Item1.Count() == 0)
+        {
+            <p class="list-empty">This is a newly created program, no sessions exist yet.</p>
+        }
+        else
+        {
+            <table id="sortable">
+                <thead>
+                <tr class="table-heading">
+                    <th>Date</th>
+                    <th>Registered</th>
+                    <th>Attended</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var a in Model.Item1)
+                {
+                    {
+                        ChildCentre.ViewModels.ReportGraph rg1 = new ChildCentre.ViewModels.ReportGraph();
+                        rg1.date = a.Date.ToString("MM-dd-yy");
+                        rg1.number = a.TotalRegistered;
+                        list.Add(rg1);
+                        ChildCentre.ViewModels.ReportGraph rg2 = new ChildCentre.ViewModels.ReportGraph();
+                        rg2.date = a.Date.ToString("MM-dd-yy");
+                        rg2.number = a.Guardians.Count;
+                        list2.Add(rg2);
+                    }
+                    <tr>
+                        @if (!a.Date.Month.Equals(currentMonth.Month))
+                        {
+                            currentMonth = a.Date;
+                            <td style="font-weight:bold"><i>@currentMonth.ToString("MMMM yyyy")</i></td>
+                        }
+                    </tr>
+                    <tr>
+                        <td>@a.Date.ToString("MMMM dd")</td>
+                        <td>@a.TotalRegistered</td>
+                        <td>@a.Guardians.Count</td>
+                    </tr>
+
+                }
+                <tr>
+                    <td style="border:none !important"></td>
+                    <td style="border:none !important; padding-left:0;"><strong>Total Registered : </strong> @totalRegistered</td>
+                    <td style="border:none !important; padding-left:0"><strong>Total Attended : </strong> @totalAttended</td>
+                </tr>
+                </tbody>
+            </table>
+            if (Model.Item1.Count() <= 1)
+            {
+                <p class="list-empty">Graph is generated after 2 or more sessions.</p>
+            }
+            else 
+            {
+            <div style="padding-left:15px; width:130px; overflow:hidden; margin-top:20px;">
+                <p style="width:80px; margin-bottom:0; font-size:12px; float:left">Registered :</p>
+                <div style="background-color:#4bb2c5; height:15px; width:15px; float:right"></div>
+            </div>
+             <div style="padding-left:15px; width:130px; overflow:hidden;">  
+                <p style="width:80px; margin-bottom:0; font-size:12px; float:left">Attended : </p>
+                <div style="background-color:#eaa228; height:15px; width:15px; float:right"></div>
+            </div>
+            <div style="width:95%; height:300px; margin:20px;" id="chart1"></div>
+            }
+        }
+    </div>
+</div>
+@{
+    var array = javaSerial.Serialize(list);
+    var array2 = javaSerial.Serialize(list2);
+}
+<script>
+    $(document).ready(function () {
+        var chart_data = @Html.Raw(array);
+        var line1 = [];
+
+        for (i = 0; i < chart_data.length; i++) {
+            line1.push([chart_data[i]["date"], chart_data[i]["number"]]);
+        }
+
+        var chart_data2 = @Html.Raw(array2);
+        var line2 = [];
+
+        for (i = 0; i < chart_data2.length; i++) {
+            line2.push([chart_data2[i]["date"], chart_data2[i]["number"]]);
+        }
+
+        //var line1 = [['23-May-08', 578.55], ['20-Jun-08', 566.5]];
+        var plot1 = $.jqplot('chart1', [line1, line2], {
+            title: '',
+            axes: {
+                xaxis: {
+                    renderer: $.jqplot.DateAxisRenderer,
+                    tickOptions: {
+                        formatString: '%b&nbsp;%#d'
+                    }
+                },
+                yaxis: {
+                    tickOptions: {
+                        formatString: ''
+                    }
+                }
+            },
+            highlighter: {
+                show: true,
+                sizeAdjust: 7.5
+            },
+            cursor: {
+                show: false
+            }
+        });
+    });
+</script>

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ChildCentre.ViewModels.GuardianList>
+
+@{
+    ViewBag.Title = "Manage Guardian Accounts";
+}
+<div class="row">
+    <div class="admin-nav large-5 column">
+        <h2><i class="icon-gears"></i>Supervisor Panel</h2>
+        <ul>
+            <li><a href="/Supervisor/StaffList/">Manage Staff Accounts</a></li>
+            <li><a class="active" href="/Supervisor/GuardianList/">Manage Guardian Accounts</a></li>
+            <li><a href="/Supervisor/ManagePrograms/">Manage Programs</a></li>
+            <li><a href="/Supervisor/ReportList">Generate Report</a></li>
+        </ul>
+    </div>
+    <div class="admin-content large-18 column">
+        <h2>@ViewBag.Title /</h2>
+        @if (Model.Count() == 0)
+        {
+            <p class="list-empty">No guardian accounts created.
+                <a id="addStaff" href="/Supervisor/AddGuardian/"><i class="icon-plus"></i> Add Guardian</a>
+            </p>
+        }
+        else
+        {
+            <div class="actions-bar">
+                <div class="large-8 column">
+                    <input name="search" id="search-field" type="search" placeholder="Search Guardian Accounts..." />
+                </div>
+                <div class="large-12 column">
+                    <a id="addGuardian" class="right button secondary tiny" href="/Supervisor/AddGuardian/"><i class="icon-plus"></i> Add Guardian</a>
+                </div>
+            </div>
+            <table id="sortable" class="tablesorter">
+                <thead>
+                <tr class="table-heading">
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>                        
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.UserName</td>
+                        <td>@a.GivenName</td>
+                        <td>@a.LastName</td>
+                        <td>@a.Email</td>
+                        <td class="operations">
+                            <a class="edit hint--bottom" data-hint="Edit" href="/Supervisor/EditGuardian/@a.Id">
+                                <i class="icon-edit"></i>
+                            </a>                          
+                            <a class="delete hint--bottom" data-hint="Delete"  onclick="deleteGuardian('@a.UserName'); return false;" href="#">
+                                <i class="icon-remove"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+
+<script>
+    function deleteGuardian(name) {
+        if (confirm('Are you sure you want to delete this guardian account?')) {
+            $.ajax({
+                url: '/Supervisor/DeleteGuardian/',
+                data: {
+                    name: name,
+                },
+                type: 'POST',
+                success: function (data) {
+                    window.location = '/Supervisor/GuardianList/';
+                },
+            });
+        }
+    }
+</script>

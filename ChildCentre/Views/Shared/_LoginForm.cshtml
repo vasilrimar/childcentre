@@ -1,0 +1,18 @@
+﻿@model ChildCentre.ViewModels.LoginModel
+
+<div id="loginForm" class="f-dropdown content small" data-dropdown-content>
+    @using (Html.BeginForm("Login", "Account",
+        new { ReturnUrl = ViewBag.ReturnUrl },
+        FormMethod.Post, htmlAttributes: new { @class = "data-abide" })) 
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <input type="text" name="UserName" placeholder="Username" required />
+        <small class="error">Name is required.</small>
+        <input type="password" name="Password" placeholder="Password" required />
+        <small class="error">Password is required.</small>
+        <input type="submit" class="button" value="Log in" />
+    }  
+	<a class="forgot-pass" href="#">Forgot Password?</a>
+	<a class="login-button" data-reveal-id="roleModal"  href="#"><i class="icon-chevron-sign-right"></i></a>
+</div>
